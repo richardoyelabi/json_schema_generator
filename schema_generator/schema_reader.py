@@ -68,9 +68,7 @@ class SchemaReader:
             schema["type"] = "null"
 
         elif isinstance(obj, dict):
-            schema["type"] = "object"
-            schema["properties"] = self._build_object_schema_properties(
-                obj)
+            schema = self._build_object_schema_properties(obj)
 
         elif isinstance(obj, list):
             list_item_types = self._get_list_item_types(obj)
