@@ -1,6 +1,6 @@
 # Instructions to run
 - Put all json files whose schemas are to be sniffed in the ./data folder.
-- cd to root of this project and run `python3 ./main.py
+- cd to root of this project and run `python3 ./main.py`.
 
 # Other details
 - Generated schemas should be stored in the ./schema folder.
