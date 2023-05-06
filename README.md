@@ -8,4 +8,4 @@
 - The program was tested on Python 3.10.6
 
 # Dev phase
-- Still riddled with bugs. There seems to be a RecursionError that prevents json dump.
+- Todo: more unit tests

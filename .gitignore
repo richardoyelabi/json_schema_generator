@@ -7,3 +7,6 @@ __pycache__/
 
 # VS code
 .vscode/
+
+# project specific
+schema

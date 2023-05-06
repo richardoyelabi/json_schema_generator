@@ -2,13 +2,10 @@ from schema_generator.json_manager import JSONObjectsManager, JSONObject
 from schema_generator.schema_reader import SchemaReader
 
 from typing import List, Tuple
-import logging
 
 
 folder_path = "./data"
 json_objects_manager = JSONObjectsManager(folder_path)
-
-logger = logging.getLogger()
 
 
 def load_all_json(

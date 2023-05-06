@@ -44,20 +44,13 @@ class SchemaReader:
         schema = self._get_object_schema(obj)
         return schema
 
-    def _get_object_schema(self, obj: JSONObject, visited: set = None) \
+    def _get_object_schema(self, obj: JSONObject) \
         -> JSONObject:
         """
         Recursively build up schema of 'obj'.
         """
-        if visited is None:
-            visited = set()
 
-        if id(obj) in visited:
-            return None
-
-        visited.add(id(obj))
-
-        schema = self._default_object_schema
+        schema = copy.deepcopy(self._default_object_schema)
 
         if isinstance(obj, int):
             schema["type"] = "integer"
@@ -77,7 +70,7 @@ class SchemaReader:
         elif isinstance(obj, dict):
             schema["type"] = "object"
             schema["properties"] = self._build_object_schema_properties(
-                obj, visited)
+                obj)
 
         elif isinstance(obj, list):
             list_item_types = self._get_list_item_types(obj)
@@ -89,33 +82,33 @@ class SchemaReader:
             else:
                 schema["type"] = "array"
                 schema["items"] = self._build_array_schema_items(
-                    obj, list_item_types, visited)
+                    obj, list_item_types)
 
         else:
             raise ValueError("Invalid object schema.")
         
         return schema
         
-    def _build_object_schema_properties(self, obj: dict, visited: str = None) -> dict:
+    def _build_object_schema_properties(self, obj: dict) -> dict:
         """
         Build up 'properties' of json objects of the 'object' type.
         """
-        props = {key: self._get_object_schema(value, visited) 
+        props = {key: self._get_object_schema(value) 
                  for key, value in obj.items()}
         return props
     
     def _build_array_schema_items(
-            self, obj: list, list_item_types: list, visited: str = None) -> list:
+            self, obj: list, list_item_types: list) -> list:
         """
         Build up 'items' of json objects of the 'array' type.
         """
         no_of_types = len(list_item_types)
         if no_of_types==1:
-            items = self._get_object_schema(obj[0], visited)
+            items = self._get_object_schema(obj[0])
         else:
             items = {}
             if no_of_types!=0:
-                items["anyOf"] = [self._get_object_schema(item, visited) 
+                items["anyOf"] = [self._get_object_schema(item) 
                                   for item in obj]
         return items
     

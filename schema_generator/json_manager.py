@@ -1,6 +1,5 @@
 import json
 import os
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Tuple, List, Dict, Union
 
 
@@ -18,7 +17,7 @@ class JSONObjectsManager:
     Provides dump_all_json method to 
     """
 
-    _dump_path = "../schema"
+    _dump_path = "./schema"
 
     def __init__(self, folder_path: str ="../data") -> None:
         self._folder_path = folder_path
@@ -46,7 +45,7 @@ class JSONObjectsManager:
         if not os.path.isfile(file_path):
             os.makedirs(os.path.dirname(file_path), exist_ok=True)
             
-        with open(file_path, "w") as file:
+        with open(os.path.abspath(file_path), "w") as file:
             json.dump(data, file, indent=4)
 
     @staticmethod
