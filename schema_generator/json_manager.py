@@ -9,8 +9,6 @@ JSONObject = Union[int, float, bool, str, List, Dict, None]
 class JSONObjectsManager:
     """
     Class to read multiple json files and manage resulting objects.
-
-    Uses multithreading to run IO operations 'in parallel'.
     
     :param: folder_path: str: folder that contains json files.
     Provides all_json property that returns list of json objects from files.
