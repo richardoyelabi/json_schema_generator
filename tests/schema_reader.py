@@ -11,7 +11,7 @@ class TestSchemaGeneration(unittest.TestCase):
     def setUp(self) -> None:
         test_data_folder: str = "tests/fixtures/test_data/"
         test_schema_folder: str = "tests/fixtures/test_schema/"
-        test_data_files: tuple = ("test_data_1.json", "test_data_1.json")
+        test_data_files: tuple = ("test_data_1.json", "test_data_2.json")
         test_schema_files: tuple = ("test_schema_1.json", "test_schema_2.json")
 
         test_data_filenames: tuple = tuple([
@@ -44,10 +44,16 @@ class TestSchemaGeneration(unittest.TestCase):
             schema_reader.schema for schema_reader in self.schema_readers
         ]
 
-    def test_sample_json(self):
-        pass
+    def test_generated_schema_equals_expected(self):
+        for index, instance in enumerate(self.json_objects):
+            generated_schema = self.schemas[index]
+            expected_schema = instance[1]
+            self.assertEqual(generated_schema, expected_schema)
 
     def test_keys_of_interest(self):
+        """
+        E.g. test that only the 'message' key of the input source data is captured.
+        """
         for index, instance in enumerate(self.json_objects):
             schema_reader = self.schema_readers[index]
             schema = self.schemas[index]
