@@ -39,12 +39,9 @@ class JSONObjectsManager:
             data: JSONObject, file_path: str) -> JSONObject:
         """
         Write specific JSONObject object to file.
-        """
-        if not os.path.isfile(file_path):
-            os.makedirs(os.path.dirname(file_path), exist_ok=True)
-            
+        """ 
         with open(os.path.abspath(file_path), "w") as file:
-            json.dump(data, file, indent=4)
+            json.dump(data, file, indent=2)
 
     @staticmethod
     def load_json_file(file_path) -> JSONObject:
