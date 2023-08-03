@@ -11,27 +11,44 @@ class JSONObjectsManager:
     Class to read multiple json files and manage resulting objects.
     
     :param: folder_path: str: folder that contains json files.
+    :param: dump_path: str: optional: default folder to dump json files in 
+        when .dump_all_json method is called.
+
     Provides all_json property that returns list of json objects from files.
-    Provides dump_all_json method to 
+    Provides dump_all_json method to dump json objects into files.
     """
 
-    _dump_path = "./schema"
-
-    def __init__(self, folder_path: str ="../data") -> None:
-        self._folder_path = folder_path
-        self.all_json_plus_filename = self._load_all_json()
-        self.all_json = [json_item[0] 
-                         for json_item in self.all_json_plus_filename]
+    def __init__(
+            self, folder_path: str, dump_path: str = "") -> None:
         
-    def dump_all_json(self, json_objs: List[Tuple[JSONObject, str]]):
+        self._folder_path = folder_path
+        self._dump_path = dump_path
+        
+    @property
+    def all_json(self):
+        return [json_item[0] for json_item in self.all_json_plus_filename]
+    
+    @property
+    def all_json_plus_filename(self):
+        return self._load_all_json()
+        
+    def dump_all_json(self, 
+                json_objs: List[Tuple[JSONObject, str]], dump_path: str = ""):
         """
         Write list of JSONObject objects to files.
+
+        dump_path defaults to dump_path passed during object 
+        instantiation if not provided.
         """
+        assert dump_path or self._dump_path, \
+            "dump_path must be provided if not specified during instantiation"
+        
+        dump_path = dump_path if dump_path else self._dump_path
 
         for json_plus_filename in json_objs:
             self.dump_json_to_file(
                 json_plus_filename[0], 
-                self._get_dump_path(json_plus_filename[1])
+                self._get_dump_path(json_plus_filename[1], dump_path)
             )
 
     @staticmethod
@@ -51,12 +68,12 @@ class JSONObjectsManager:
         with open(file_path, "r") as file:
             return json.load(file)
 
-    def _get_dump_path(self, filename: str) -> str:
+    def _get_dump_path(self, filename: str, dump_path: str) -> str:
         """
         Get path of file to dump json data into.
         """
         dump_filename = f"{filename.split('.')[:-1][0]}_schema.json"
-        dump_path = os.path.join(self._dump_path, dump_filename)
+        dump_path = os.path.join(dump_path, dump_filename)
         return dump_path
 
     def _load_all_json(self) -> List[Tuple[JSONObject, str]]:

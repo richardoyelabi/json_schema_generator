@@ -5,6 +5,7 @@ from typing import List, Tuple
 
 
 folder_path = "./data"
+dummp_path = "./schema"
 json_objects_manager = JSONObjectsManager(folder_path)
 
 
@@ -44,7 +45,7 @@ def dump_all_json(json_objs: List[Tuple[JSONObject, str]]) -> None:
     """
     Write list of JSONObject objects to files.
     """
-    json_objects_manager.dump_all_json(json_objs)
+    json_objects_manager.dump_all_json(json_objs, dummp_path)
 
 
 def main():
