@@ -30,7 +30,10 @@ class SchemaReader:
         self.obj_subset_to_read = {
             key: self.obj.get(key) for key in self._keys_of_interest
         }
-        self.schema = self._build_schema()
+
+    @property
+    def schema(self):
+        return self._build_schema()
 
     def _build_schema(self) -> JSONObject:
         """
@@ -39,7 +42,7 @@ class SchemaReader:
         obj = self.obj_subset_to_read
 
         if not obj and isinstance(obj, dict):
-            return {}
+            return obj
         
         schema = self._get_object_schema(obj)
         return schema
