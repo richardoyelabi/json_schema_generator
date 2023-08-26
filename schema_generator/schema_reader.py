@@ -27,7 +27,10 @@ class SchemaReader:
 
     def __init__(self, obj: JSONObject) -> None:
         self.obj = obj
-        self.obj_subset_to_read = {
+
+    @property
+    def obj_subset_to_read(self):
+        return {
             key: self.obj.get(key) for key in self._keys_of_interest
         }
 
@@ -55,7 +58,7 @@ class SchemaReader:
 
         schema = copy.deepcopy(self._default_object_schema)
 
-        if isinstance(obj, int):
+        if isinstance(obj, int) and not isinstance(obj, bool):
             schema["type"] = "integer"
 
         elif isinstance(obj, float):
@@ -117,6 +120,6 @@ class SchemaReader:
         """
         Get list of the unique data types of the items in the 'obj' list.
         """
-        types = [type(item) for item in obj]
-        types = list(set(types)) # ensure each type appears only once
+        types = {type(item) for item in obj}
+        types = list(types)
         return types
