@@ -2,6 +2,9 @@
 __pycache__/
 *.py[cod]
 
+# Coverage (test)
+.coverage
+
 # Virtual environment
 .venv/
 
